@@ -1,0 +1,57 @@
+package vishnu;
+
+
+	
+	
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+
+public class WikipediaTask {
+    public static void main(String[] args) {
+//      System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(12));
+        
+    //  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(12));
+      driver.get("https://www.wikipedia.org/");
+      driver.findElement(By.id("searchInput")).sendKeys("Test automation"+ Keys.ENTER);
+      
+      
+     String fullWikipediatContent = driver.findElement(By.id("bodyContent")).getText();
+  
+// excluding brackets and contents
+     fullWikipediatContent = fullWikipediatContent.replaceAll("\\[.*?\\]", ""); 
+
+	// excluding delimiters
+     fullWikipediatContent = fullWikipediatContent.replaceAll("[^\\w\\s]", ""); 
+
+	// convert to lowercase and split into words
+        String[] words = fullWikipediatContent.toLowerCase().split("\\s+"); 
+        
+        
+
+        LinkedHashMap<String, Integer> wordCounts = new LinkedHashMap<>();
+        
+        for (String word : words) {
+        	
+        	
+           
+        	wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
+        	
+    	}
+
+     for (Map.Entry<String, Integer> entry : wordCounts.entrySet()) {
+     System.out.println(entry.getKey() + ": " + entry.getValue());
+       }
+
+
+     
+     driver.quit();
+    }
+}
